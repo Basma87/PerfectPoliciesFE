@@ -1,0 +1,84 @@
+﻿@model IEnumerable<PerfectPoliciesFE.Models.Quiz>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <tr>
+        <th width="250px">
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+        </th>
+        <th >
+            <a  asp-controller="Quiz" asp-action="DisplayReport">Show Report</a>
+        </th>
+
+        <th>
+          @*  @Html.DropDownListFor(model => model)*@
+            </th>
+    </tr>
+</table>
+
+      
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                
+                @Html.DisplayNameFor(model => model.QuizID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizTopic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>   
+            <th>
+                @Html.DisplayNameFor(model => model.PassPercentage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuizID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuizTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuizTopic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassPercentage)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.QuizID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.QuizID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.QuizID }) |
+                    @Html.ActionLink("Questions", "quizQuestions", "Question", new { id = item.QuizID })
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

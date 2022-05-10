@@ -1,0 +1,62 @@
+﻿@model IEnumerable<PerfectPoliciesFE.Models.Option>
+
+@{
+    ViewData["Title"] = "optionsForQuestion";
+
+    var QuestionName = ViewBag.questioName;
+}
+
+
+
+<h1>optionsForQuestion : "@QuestionName"</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionText)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CorrectAnswer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionID)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

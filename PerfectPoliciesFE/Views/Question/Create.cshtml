@@ -1,0 +1,95 @@
+﻿@model PerfectPoliciesFE.Models.Question
+
+@{
+    ViewData["Title"] = "Create";
+
+    List<SelectListItem> QuizesList = ViewBag.AllQuizes;
+}
+
+<h1>Create</h1>
+
+<h4>Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                    <label asp-for="QuestionID" class="control-label"></label>
+                    <input asp-for="QuestionID" class="form-control" />
+                    <span asp-validation-for="QuestionID" class="text-danger"></span>
+                </div>*@
+            @Html.HiddenFor(model => model.QuestionID)
+
+
+            <div class="form-group">
+                <label asp-for="QuestionTopic" class="control-label"></label>
+                <input asp-for="QuestionTopic" class="form-control" />
+                <span asp-validation-for="QuestionTopic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionText" class="control-label"></label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagePath" class="control-label"></label>
+                <input asp-for="ImagePath" class="form-control" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="QuizID" class="control-label"></label>
+                    <input asp-for="QuizID" class="form-control" />
+                    <span asp-validation-for="QuizID" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group">
+                <label asp-for="QuizID" class="control-label"> Quiz Title</label>
+                <select asp-for="QuizID" asp-items="QuizesList" class="form-control"> </select>
+                <span asp-validation-for="QuizID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<h2> Drag photo for Question</h2>
+<div class="row">
+    @using (Html.BeginForm("UploadFile", "Question", FormMethod.Post, new { @class = "dropzone", id = "dropzone-form" }))
+    {
+        <div class="fallback">
+            <input name="file" type="file" />
+        </div>
+    }
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+<script src="~/lib/dropzone/min/dropzone.min.js">
+</script>
+
+
+<script type="text/javascript">
+    Dropzone.options.dropzoneForm = {
+        paramName:"file",
+        maxFiles:1,
+        acceptedFiles: "image/*",
+        success: function (file,response) {
+            $("#ImagePath").val(file.upload.filename);
+            file.previewElement.classList.add("dz.success");
+        }}
+
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

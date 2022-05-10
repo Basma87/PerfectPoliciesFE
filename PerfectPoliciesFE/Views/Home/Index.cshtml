@@ -1,0 +1,48 @@
+﻿@{
+    @using Microsoft.AspNetCore.Http;
+}
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@{ 
+    var orgName = "";
+
+
+
+    if (Context.Session.Keys.Any(c => c.Equals("orgNameSession")))  // from session values in home controller
+    {
+        orgName = Context.Session.GetString("orgNameSession");  // from session values in home controller
+    }
+
+    
+}
+
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <br><br>
+    <label>Enter your organization name to continue</label>
+
+    <form asp-action="GetQuizzesByOrganizationName">
+
+        <div>
+            <input id="orgNametxtInput" name="orgNametxtInput" type="text" value="@orgName" class="form-control" required>
+
+        </div>
+
+        
+     
+        <div class="col-md-12 text-center mt-2">
+            <input type="submit" value="View Quizzes" class="btn btn-light" />
+        </div>
+
+
+    </form>
+
+</div>

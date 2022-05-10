@@ -1,0 +1,81 @@
+﻿@model IEnumerable<PerfectPoliciesFE.Models.Quiz>
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "GetQuizzesByOrganizationName";
+  
+}
+
+@{
+    var organizatioName = "";
+   
+
+    if (Context.Session.Keys.Any(c => c.Equals("organizationName")))
+    {
+        organizatioName = Context.Session.GetString("organizationName");
+    }
+  
+}
+
+ <h4>All Quizzes For: @organizatioName</h4>
+
+ <p>
+    
+     <a asp-controller="Quiz" asp-action="Create">Create New</a>
+   
+ </p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizTopic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassPercentage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuizID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuizTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuizTopic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassPercentage)
+            </td>
+            <td>
+
+                @*LinkText, Action Method, controllerName*@
+                @Html.ActionLink("Questions", "GetAllQuestions", "Question", new { id = item.QuizID })
+         
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
