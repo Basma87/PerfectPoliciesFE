@@ -6,7 +6,10 @@
     <title>@ViewData["Title"] - PerfectPoliciesFE</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/dropzone/min/dropzone.min.css" />
+    @*embbed google icons library*@
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">  
     <link rel="stylesheet" href="~/css/site.css" />
+
 </head>
 <body>
     <header>
@@ -35,7 +38,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Option" asp-action="Index">Options</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Help" icon="~/images/question-mark.png">Help</a>
+                            @* <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Help" icon="~/images/question-mark.png">Help</a>*@
+                            @*font size --> change photo size*@
+                            @*put color:inherit to style to disable coloring icon with blue color*@
+                            <a style="margin-left:10px ; color:inherit" asp-controller="Home" asp-action="Help">
+                                <span class="material-icons" style="font-size:36px">help</span>
+                            </a>
                         </li>
                     </ul>
 
@@ -48,7 +56,7 @@
                         {
                             <a class="btn btn-primary" asp-controller="Auth" asp-action="Login">Login  </a>
                         }
-                      }
+                    }
                 </div>
             </div>
         </nav>

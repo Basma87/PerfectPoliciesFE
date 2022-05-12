@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace PerfectPoliciesFE.Models
 
         public string QuestionText { get; set; }
 
+        [Display(Name ="Image")]
         public string? ImagePath { get; set; }
 
         // navigation Property

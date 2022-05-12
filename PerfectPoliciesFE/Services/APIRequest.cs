@@ -16,12 +16,14 @@ namespace PerfectPoliciesFE.Services
 
         public APIRequest(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
+            // save the injected HTTpContext
             _client = httpClientFactory.CreateClient("APIClient");
             _context = httpContextAccessor.HttpContext;
 
-            if (_context.Session.GetString("Token")!=null)
+            if (_context.Session.GetString("Token") != null)
             {
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",_context.Session.GetString("Token"));
+                // write token to authorization header
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _context.Session.GetString("Token"));
             }
         }
 
@@ -88,7 +90,7 @@ namespace PerfectPoliciesFE.Services
 
         public T Edit(string controllerName, int id, T entity)
         {
-            var response = _client.PutAsJsonAsync($"{controllerName}/{id}",entity).Result;
+            var response = _client.PutAsJsonAsync($"{controllerName}/{id}", entity).Result;
 
             return response.Content.ReadAsAsync<T>().Result;
         }
@@ -103,7 +105,7 @@ namespace PerfectPoliciesFE.Services
         }
 
 
-       
+
 
 
         public void Delete(string controllerName, int id)
@@ -115,6 +117,6 @@ namespace PerfectPoliciesFE.Services
 
         }
 
-       
+
     }
 }

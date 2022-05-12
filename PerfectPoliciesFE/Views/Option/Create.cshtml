@@ -29,7 +29,7 @@
                 <span asp-validation-for="OptionText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OptionNumber" class="control-label"> </label>
+              @*  <label asp-for="OptionNumber" class="control-label"> </label>*@
                 <input asp-for="OptionNumber" class="form-control" type="text" value="@optionNUmber" min="0"  required hidden/>
                 <span asp-validation-for="OptionNumber" class="text-danger"></span>
             </div>

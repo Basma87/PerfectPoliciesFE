@@ -53,7 +53,7 @@ namespace PerfectPoliciesFE
 
                 c.BaseAddress = new Uri(Configuration["WebAPIURL"]);
                 c.DefaultRequestHeaders.Clear();
-                c.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")); // good to know but not nesseccary 
+                c.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")); 
             }
             );
         }

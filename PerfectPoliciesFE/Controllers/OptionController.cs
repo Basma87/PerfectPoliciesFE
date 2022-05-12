@@ -34,6 +34,10 @@ namespace PerfectPoliciesFE.Controllers
             qList = _questionService.getAll("Question");
         }
 
+        /// <summary>
+        /// Method that retrieves all options to calculate latest option number will be set during new option creation
+        /// creates select list of questions that will be loaded in the drop down list during new option creation
+        /// </summary>
         private void createViewBag()
         {
             var options = _optionService.getAll("Options");
@@ -65,6 +69,11 @@ namespace PerfectPoliciesFE.Controllers
             return View(OptionsList);
         }
 
+        /// <summary>
+        /// Method that retrieves all options for a certain question
+        /// </summary>
+        /// <param name="id">question id</param>
+        /// <returns> view of list of options</returns>
         public ActionResult optionsForQuestion(int id)
         {
             var optionsList = _optionService.GetChildrenforParentID(controllerName, "QuestionOptions", id);

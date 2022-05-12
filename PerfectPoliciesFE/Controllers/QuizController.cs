@@ -1,4 +1,5 @@
 ﻿using ChartJSCore.Models;
+using CsvHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectPoliciesFE.Helpers;
@@ -7,6 +8,8 @@ using PerfectPoliciesFE.Models.ViewModels;
 using PerfectPoliciesFE.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -66,7 +69,31 @@ namespace PerfectPoliciesFE.Controllers
 
         }
 
-       
+        public IActionResult ExportData()
+        {
+            // get the data for the report (find a way to improve this)
+            var response = _reportService.getAll("Report", "DataReport");
+
+
+            //create a memory stream
+            var stream = new MemoryStream();
+
+            // create stream writer to populate data to memory stream
+            using (var writer =new StreamWriter(stream,leaveOpen:true))
+            {
+                // generate recirds that will be writen
+                var csv = new CsvWriter(writer, CultureInfo.CurrentCulture,true);
+                // write csv data by stream writer to the meory stream
+                csv.WriteRecords(response);
+            }
+
+            stream.Position = 0; // point to the start of stream to read data 
+
+            return File(stream,"application/octect-stram",$"ReportData_{DateTime.Now.ToString("ddMMM_HHmmss")}.csv");
+        }
+
+
+
         public ActionResult Details(int id)
         {
             if (AuthHelper.isNotLoogedIN(HttpContext))   
