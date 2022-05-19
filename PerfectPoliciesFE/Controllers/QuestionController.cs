@@ -20,10 +20,16 @@ namespace PerfectPoliciesFE.Controllers
         private readonly IAPIRequest<Quiz> _quizService;
         private readonly IAPIRequest<Question> _questionService;
         private string controllerName = "Question";
-        private IWebHostEnvironment _hostingEnvironment;
+        private IWebHostEnvironment _hostingEnvironment; // variable that hlds information about hosting evironment that application in it.
+        private static List<Quiz> allQuizes;
 
 
-
+        /// <summary>
+        /// injecting hosting environment, quiz service and question service.
+        /// </summary>
+        /// <param name="questionService"></param>
+        /// <param name="quizService"></param>
+        /// <param name="hostEnvironment"></param>
         public QuestionController(IAPIRequest<Question> questionService, IAPIRequest<Quiz> quizService, IWebHostEnvironment hostEnvironment)
         {
             _questionService = questionService;
@@ -33,10 +39,13 @@ namespace PerfectPoliciesFE.Controllers
         }
 
       
-
+        /// <summary>
+        /// method that loads all quizzes to be displayed in the view pages.
+        /// </summary>
         private void CreateViewBag()
         {
-            var allQuizes = _quizService.getAll("Quiz");
+           
+            allQuizes = _quizService.getAll("Quiz");
 
             var QuizesSelect = allQuizes.Select(c => new SelectListItem
             {
@@ -48,14 +57,21 @@ namespace PerfectPoliciesFE.Controllers
             ViewBag.AllQuizes = QuizesSelect;
         }
 
-        //GET: QuestionController
+      /// <summary>
+      /// method that loads question index page 
+      /// </summary>
+      /// <returns></returns>
         public ActionResult Index()
         {
             var questionList = _questionService.getAll(controllerName);
             return View(questionList);
         }
 
-        // GET: QuestionController/Details/5
+        /// <summary>
+        /// method that gets details of a certain question
+        /// </summary>
+        /// <param name="id"> question ID</param>
+        /// <returns> view of a question details</returns>
         public ActionResult Details(int id)
         {
             if (AuthHelper.isNotLoogedIN(HttpContext))
@@ -67,16 +83,17 @@ namespace PerfectPoliciesFE.Controllers
             return View(question);
         }
 
-        public ActionResult GetAllQuestions(int id)
-        {
-          
-            var questionList = _questionService.GetChildrenforParentID(controllerName, "getAllQuestionsOfQuiz", id);
-            return View("index",questionList);
-        }
 
+
+        /// <summary>
+        /// method that gets all questions relatedto a quiz 
+        /// </summary>
+        /// <param name="id">quiz ID </param>
+        /// <returns> view page of questions of a quiz </returns>
         public ActionResult quizQuestions(int id)
         {
-            var allQuizes = _quizService.getAll("Quiz");
+        
+            allQuizes = _quizService.getAll("Quiz");
 
             var questionsList = _questionService.GetChildrenforParentID(controllerName, "getAllQuestionsOfQuiz", id);
             int quizID = questionsList.Select(c => c.QuizID).FirstOrDefault();
@@ -87,22 +104,28 @@ namespace PerfectPoliciesFE.Controllers
 
         }
 
-     
-        // GET: QuestionController/Create
+
+        /// <summary>
+        /// method that renders create question page.
+        /// </summary>
+        /// <returns> create question page</returns>
         public ActionResult Create()
         {
-            CreateViewBag();
+            CreateViewBag();  // loads quizzes in the select list
 
             return View();
         }
 
-        // POST: QuestionController/Create
+        /// <summary>
+        /// method that creates new Question
+        /// </summary>
+        /// <param name="newQuestion"> new option object</param>
+        /// <returns> questions index page</returns>
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Question newQuestion)
         {
-            
-
             try
             {
                 _questionService.Create(controllerName, newQuestion);
@@ -115,7 +138,11 @@ namespace PerfectPoliciesFE.Controllers
             }
         }
 
-        // GET: QuestionController/Edit/5
+        /// <summary>
+        /// method that renders Edit question page
+        /// </summary>
+        /// <param name="id"> question Id</param>
+        /// <returns> question edit page</returns>
         public ActionResult Edit(int id)
         {
             if (AuthHelper.isNotLoogedIN(HttpContext))
@@ -134,7 +161,12 @@ namespace PerfectPoliciesFE.Controllers
 
         
 
-        // POST: QuestionController/Edit/5
+        /// <summary>
+        /// method that saves eited Question into the database
+        /// </summary>
+        /// <param name="id"> question ID</param>
+        /// <param name="newQuestion"> new Question values</param>
+        /// <returns> questions index page</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Question newQuestion)
@@ -156,7 +188,11 @@ namespace PerfectPoliciesFE.Controllers
             }
         }
 
-        // GET: QuestionController/Delete/5
+        /// <summary>
+        /// method that renders question delete page
+        /// </summary>
+        /// <param name="id"> question ID</param>
+        /// <returns></returns>
         public ActionResult Delete(int id)
         {
             if (AuthHelper.isNotLoogedIN(HttpContext))
@@ -167,7 +203,12 @@ namespace PerfectPoliciesFE.Controllers
             return View(question);
         }
 
-        // POST: QuestionController/Delete/5
+        /// <summary>
+        /// method that deletes question from database.
+        /// </summary>
+        /// <param name="id"> question ID</param>
+        /// <param name="question"> question object to be deleted</param>
+        /// <returns> question index page </returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Question question)
@@ -190,19 +231,24 @@ namespace PerfectPoliciesFE.Controllers
             }   
         }
 
+        /// <summary>
+        /// method that implement drag & drop functionality, by uploading image to the server
+        /// </summary>
+        /// <param name="file"> file object</param>
+        /// <returns> success message </returns>
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
+            
             string folderRoot = Path.Combine(_hostingEnvironment.ContentRootPath, "WWWroot\\Uploads");
             string filepath = Path.Combine(folderRoot, file.FileName);
 
 
-            using (var stream = new FileStream(filepath, FileMode.Create))
+            using ( var stream = new FileStream(filepath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-
-
+            
             return Ok(new { success = true, message = "File Uploaded" });
         }
     }

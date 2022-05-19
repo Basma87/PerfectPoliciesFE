@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// interface that defines methods to be implemented in the child class
+/// </summary>
 namespace PerfectPoliciesFE.Services
 {
    public interface IAPIRequest<T>
@@ -15,7 +18,7 @@ namespace PerfectPoliciesFE.Services
 
         T Edit(string controllerName, int id, T entity);
 
-        void Delete(string controller, int id);
+        T Delete(string controller, int id);
 
         List<T> GetChildrenforParentID(string controllerName, string Endpoint, int id);
 

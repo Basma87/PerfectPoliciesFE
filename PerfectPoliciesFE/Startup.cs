@@ -31,24 +31,27 @@ namespace PerfectPoliciesFE
 
             services.AddDistributedMemoryCache(); // to store session data in server's memory.
 
+            // register session to be used by the application
             services.AddSession(c => {
 
                 // session name cookie
                 c.Cookie.Name = "UserSession";
                 c.Cookie.HttpOnly = true;  // to not be accessed by javaScript
                 c.Cookie.IsEssential = true;
-                c.IdleTimeout = TimeSpan.FromMinutes(30);
+                c.IdleTimeout = TimeSpan.FromMinutes(30); // define session timeOut duration
 
             });
 
+            // regisering services to be injectedin controllers.
             //services.AddScoped<QuizServices>();
             services.AddScoped <IAPIRequest<Quiz>,APIRequest<Quiz>>();
             services.AddScoped<IAPIRequest<Question>,APIRequest<Question>>();
             services.AddScoped<IAPIRequest<Option>,APIRequest<Option>>();
             services.AddScoped<IAPIRequest<QuestionsPerQuizViewModel>, APIRequest<QuestionsPerQuizViewModel>>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // google this
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  // used to allow APIRequest class access API web service and access session values.
 
+            // register API 
             services.AddHttpClient("APIClient", c => {
 
                 c.BaseAddress = new Uri(Configuration["WebAPIURL"]);
@@ -79,9 +82,9 @@ namespace PerfectPoliciesFE
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization();  // use authorization middleWare.
 
-            app.UseSession();
+            app.UseSession();  // use session middleWare.
 
             app.UseEndpoints(endpoints =>
             {

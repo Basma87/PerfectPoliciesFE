@@ -15,11 +15,14 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-            <label asp-for="QuestionID" class="control-label"></label>
-            <input asp-for="QuestionID" class="form-control" />
+                    <label asp-for="QuestionID" class="control-label"></label>
+                    <input asp-for="QuestionID" class="form-control" />
+                    <span asp-validation-for="QuestionID" class="text-danger"></span>
+                </div>*@
+
             <span asp-validation-for="QuestionID" class="text-danger"></span>
-        </div>*@
             @Html.HiddenFor(model => model.QuestionID)
+            @Html.HiddenFor(model => model.QuizID)
             <div class="form-group">
                 <label asp-for="QuestionTopic" class="control-label"></label>
                 <input asp-for="QuestionTopic" class="form-control" />
@@ -36,26 +39,55 @@
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <label asp-for="QuizID" class="control-label"></label>
-            <input asp-for="QuizID" class="form-control" />
-            <span asp-validation-for="QuizID" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="QuizID" class="control-label"></label>
+                    <input asp-for="QuizID" class="form-control" />
+                    <span asp-validation-for="QuizID" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="QuizID" class="control-label">Quiz Name</label>
-                <select asp-for="QuizID" asp-items="allQuizes" class="form-control" > </select>
+                <select asp-for="QuizID" asp-items="allQuizes" class="form-control"> </select>
                 <span asp-validation-for="QuizID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
         </form>
     </div>
+</div>
+
+<h5> Drag photo for Question</h5>
+
+<div class="row" style="margin-left:5px">
+    @using (Html.BeginForm("UploadFile", "Question", FormMethod.Post, new { @class = "dropzone", id = "dropzone-form" }))
+    {
+        <div class="fallback">
+            <input name="file" type="file" />
+        </div>
+    }
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script src="~/lib/dropzone/min/dropzone.min.js">
+</script>
+
+
+<script type="text/javascript">
+    Dropzone.options.dropzoneForm = {
+        paramName: "file",
+        maxFiles: 1,
+        acceptedFiles: "image/*",
+        success: function (file, response) {
+            $("#ImagePath").val(file.upload.filename);
+            file.previewElement.classList.add("dz.success");
+        }
+    }
+
+</script>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

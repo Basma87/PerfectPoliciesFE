@@ -29,11 +29,10 @@
     <br><br>
     <label>Enter your organization name to continue</label>
 
-    <form asp-action="GetQuizzesByOrganizationName">
+    <form asp-action="GetQuizzesByOrganizationName" asp-controller="Home">
 
         <div>
             <input id="orgNametxtInput" name="orgNametxtInput" type="text" value="@orgName" class="form-control" required>
-
         </div>
 
         

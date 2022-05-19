@@ -10,11 +10,13 @@
 
 
 <table class="table">
+    
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionID)
-            </th>
+
+            @*<th>
+                    @Html.DisplayNameFor(model => model.QuestionID)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.QuestionTopic)
             </th>
@@ -24,36 +26,37 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuizID)
-            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.QuizID)
+                </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionTopic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuizID)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.QuestionID)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionTopic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionText)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImagePath)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.QuizID)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.QuestionID  }) |
+                    @Html.ActionLink("Details", "Details", new {  id=item.QuestionID }) |
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.QuestionID  })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

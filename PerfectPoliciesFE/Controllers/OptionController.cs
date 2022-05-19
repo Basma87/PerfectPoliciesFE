@@ -11,6 +11,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
+
+/// <summary>
+/// controller that handles methods of option module
+/// </summary>
 namespace PerfectPoliciesFE.Controllers
 {
     public class OptionController : Controller
@@ -23,15 +27,19 @@ namespace PerfectPoliciesFE.Controllers
         private string endpoint;
 
 
-        private static List<Question> qList;
+        private static List<Question> questionList;
    
       
-
+        /// <summary>
+        /// inject option and question service.
+        /// </summary>
+        /// <param name="optionService"> option service</param>
+        /// <param name="questionService"> question service</param>
         public OptionController(IAPIRequest<Option> optionService, IAPIRequest<Question> questionService)
         {
             _optionService = optionService;
             _questionService = questionService;
-            qList = _questionService.getAll("Question");
+            questionList = _questionService.getAll("Question");
         }
 
         /// <summary>
@@ -42,27 +50,32 @@ namespace PerfectPoliciesFE.Controllers
         {
             var options = _optionService.getAll("Options");
            
-           // var questions = _questionService.getAll("Question");
+            var questions = _questionService.getAll("Question");
 
-
+            // get laetst option number and increment by 1.
             var latestOption = options.Select(c => c.OptionNumber).LastOrDefault();
             latestOption = latestOption + 1;
         
          
             /// Questions that will be loaded in the drop dow list.
-            var questionList = qList.Select(c=>new SelectListItem { 
+            var tempList = questions.Select(c=>new SelectListItem { 
             Value=c.QuestionID.ToString(),
             Text=c.QuestionText
             
             }).ToList();
 
-           ViewBag.latestoptionNumber = latestOption;
+           // send latest option number to the view to be loaded there.
+            ViewBag.latestoptionNumber = latestOption;
 
-            ViewBag.allQuestions = questionList;
+            // send questios list the view.
+            ViewBag.allQuestions = tempList;
          
         }
 
-        // GET: OptionController
+        /// <summary>
+        /// method to display options index page that contains list of all options
+        /// </summary>
+        /// <returns> view of options list</returns>
         public ActionResult Index()
         {
             var OptionsList = _optionService.getAll(controllerName);
@@ -73,38 +86,51 @@ namespace PerfectPoliciesFE.Controllers
         /// Method that retrieves all options for a certain question
         /// </summary>
         /// <param name="id">question id</param>
-        /// <returns> view of list of options</returns>
+        /// <returns> view of list of options of a question</returns>
         public ActionResult optionsForQuestion(int id)
         {
             var optionsList = _optionService.GetChildrenforParentID(controllerName, "QuestionOptions", id);
 
-            var questionName = qList.Where(c => c.QuestionID == id).Select(c => c.QuestionText).FirstOrDefault();
+            var questionName = questionList.Where(c => c.QuestionID == id).Select(c => c.QuestionText).FirstOrDefault();
 
             ViewBag.questioName = questionName;
          
             return View(optionsList);
         }
 
-
-        // GET: OptionController/Details/5
+       
+        /// <summary>
+        /// method to display details of a certain option
+        /// </summary>
+        /// <param name="id"> option ID</param>
+        /// <returns> option details page</returns>
         public ActionResult Details(int id)
         {
+            // checks if user not logged in , redirect  to login page, else open details page for him.
             if (AuthHelper.isNotLoogedIN(HttpContext))
             {
                 return RedirectToAction("Login","Auth");
             }
+            
             var Option=_optionService.getSingle(controllerName, id);
             return View(Option);
         }
 
-        // GET: OptionController/Create
+        /// <summary>
+        /// method to return view of create option page.
+        /// </summary>
+        /// <returns> options list</returns>
         public ActionResult Create()
         {
             createViewBag();
             return View();
         }
 
-        // POST: OptionController/Create
+        /// <summary>
+        /// method to create new option into database.
+        /// </summary>
+        /// <param name="newOption">new option object</param>
+        /// <returns>updated option index view page</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Option newOption )
@@ -120,9 +146,14 @@ namespace PerfectPoliciesFE.Controllers
             }
         }
 
-        // GET: OptionController/Edit/5
+        /// <summary>
+        /// method that loads option edit page
+        /// </summary>
+        /// <param name="id"> option ID</param>
+        /// <returns> option edit page </returns>
         public ActionResult Edit(int id)
         {
+            // checks if user not logged in , redirect  to login page, else open Edit page for him.
             if (AuthHelper.isNotLoogedIN(HttpContext))
             {
                 return RedirectToAction("Login", "Auth");
@@ -136,7 +167,12 @@ namespace PerfectPoliciesFE.Controllers
            
         }
 
-        // POST: OptionController/Edit/5
+       /// <summary>
+       /// method that saves edited option in the database
+       /// </summary>
+       /// <param name="id">option ID</param>
+       /// <param name="newOption"> new option data</param>
+       /// <returns> updated option</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Option newOption)
@@ -159,7 +195,11 @@ namespace PerfectPoliciesFE.Controllers
             }
         }
 
-        // GET: OptionController/Delete/5
+      /// <summary>
+      /// method that return delete option view page.
+      /// </summary>
+      /// <param name="id"> option ID</param>
+      /// <returns>delete page</returns>
         public ActionResult Delete(int id)
         {
             if (AuthHelper.isNotLoogedIN(HttpContext))
@@ -176,7 +216,12 @@ namespace PerfectPoliciesFE.Controllers
             }
         }
 
-        // POST: OptionController/Delete/5
+      /// <summary>
+      /// method that delete option from the database
+      /// </summary>
+      /// <param name="id"> optio ID</param>
+      /// <param name="option">option to be deleted</param>
+      /// <returns>updated option index page afteroption deletion</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Option option)

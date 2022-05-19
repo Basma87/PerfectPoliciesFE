@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3> Quizzes List</h3>
 
 <table class="table">
     <tr>
         <th width="250px">
             <p>
-                <a asp-action="Create">Create New</a>
+                <a asp-action="Create">Create New Quiz</a>
             </p>
         </th>
         <th >
@@ -25,12 +25,12 @@
 
       
 <table class="table">
+  
     <thead>
         <tr>
-            <th>
-                
-                @Html.DisplayNameFor(model => model.QuizID)
-            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.QuizID)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.QuizTitle)
             </th>
@@ -42,7 +42,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Created)
-            </th>   
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.PassPercentage)
             </th>
@@ -52,10 +52,12 @@
     <tbody>
         @foreach (var item in Model)
         {
+            @Html.HiddenFor(modelItem => item.QuizID)
+
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.QuizID)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.QuizTitle)
                 </td>
@@ -76,7 +78,7 @@
                     @Html.ActionLink("Details", "Details", new { id = item.QuizID }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.QuizID }) |
                     @Html.ActionLink("Questions", "quizQuestions", "Question", new { id = item.QuizID })
-                    
+
                 </td>
             </tr>
         }

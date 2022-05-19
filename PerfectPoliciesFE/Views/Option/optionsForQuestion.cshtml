@@ -8,15 +8,17 @@
 
 
 
-<h1>optionsForQuestion : "@QuestionName"</h1>
+<h4>Options for question : "@QuestionName "</h4>
 
 
 <table class="table">
+
     <thead>
         <tr>
-            <th>
+         
+            @*<th>
                 @Html.DisplayNameFor(model => model.OptionID)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.OptionText)
             </th>
@@ -26,19 +28,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.CorrectAnswer)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionID)
-            </th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.QuestionID)
+        </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
+
         @foreach (var item in Model)
         {
+            @Html.HiddenFor(modelItem => item.OptionID)
+            @Html.HiddenFor(modelItem => item.QuestionID)
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.OptionID)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.OptionText)
                 </td>
@@ -48,13 +53,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CorrectAnswer)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.QuestionID)
-                </td>
+                </td>*@
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OptionID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.OptionID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OptionID })
                 </td>
             </tr>
         }
